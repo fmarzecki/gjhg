@@ -7,7 +7,7 @@ from flask_login import UserMixin, LoginManager, login_required, login_user, cur
 from os import environ
 
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='templates')
 app.config['SECRET_KEY'] = 'mysecret'
 app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('DATABASE_URL') or 'sqlite:///pokemons.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
