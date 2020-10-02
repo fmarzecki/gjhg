@@ -16,7 +16,7 @@ db= SQLAlchemy(app)
 
 # create login_manager here:
 login_manager = LoginManager()
-login.login_view = 'login'
+login_manager.login_view = 'login'
 # initialize login_manager here:
 login_manager.init_app(app)
 
