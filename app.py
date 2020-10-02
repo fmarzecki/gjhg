@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.exc import IntegrityError
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import UserMixin, LoginManager, login_required, login_user, current_user
+from flask_login import UserMixin, LoginManager, login_required, login_user, current_user, logout_user
 from os import environ
 
 
@@ -96,6 +96,12 @@ def game():
 def unauthorized():
     # do stuff
     return "You are not logged in. Click here to get <a href="+ str("/")+">back to Landing Page</a>"
+
+@app.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('index'))
 
 
 # ERRORS TEMPLATES
