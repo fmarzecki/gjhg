@@ -33,6 +33,11 @@ class Users(UserMixin, db.Model):
     def set_password(self, password):
         self.password = generate_password_hash(password)
 
+class Trainers(UserMixin, db.Model):
+    id= db.Column(db.Integer, primary_key=True)
+    trainer_name = db.Column(db.String(100), index=True, unique=True)
+    is_good = db.Column(db.String(5))
+
 @login_manager.user_loader
 def load_user(id):
     return Users.query.get(int(id))
@@ -47,8 +52,30 @@ def index():
 @app.route('/register', methods =["GET","POST"])
 def register():
 
-
     return render_template('register.html')
+
+
+@app.route('/game/add_trainer', methods =["GET", "POST"])
+def trainer_add():
+    if request.method == "POST":
+            trainer= Trainers(
+                trainer_name = request.form.get('trainer_name'),
+                is_good = request.form.get('is_good')
+            )
+            db.session.add(trainer)
+            try:
+                db.session.commit()
+            except IntegrityError:
+                db.session.rollback()
+                return redirect(url_for('game_err'))
+
+    return redirect(url_for("game_app"))
+
+@app.route('/game/app', methods =["GET","POST"])
+def game_app():
+
+    return render_template('game_app.html')
+
 
 
 @app.route('/register/add', methods =["GET", "POST"])

@@ -15,9 +15,10 @@
   <h1> SETUP YOUR OWN JOURNEY </h1>
 
 <div class="form__group">
-  <form autocomplete="off">
-  <input type="text" class="form__input" id="name" placeholder="Name Your Trainer" required="" />
-  <label for="name" class="form__label">Name Your Trainer</label>
+
+  <form autocomplete="off"  action="{{ url_for('trainer_add') }}" method="POST">
+  <input type="text" class="form__input" name="trainer_name" id="trainer_name"  placeholder="Name Your Trainer" required="" />
+  <label for="trainer_name" class="form__label"></label>
 
    <h2> CHOOSE YOUR SIDE </h2>
   </div>
@@ -25,10 +26,10 @@
 
 
  <div class="radio-group">
-<input type="radio" id="option-one" name="selector" value="True">
+<input type="radio" id="option-one"  value="True" name="is_good" checked="checked">
 
    <label style="color: rgba(0,255,0,.5)" for="option-one">I want them all live</label>
-   <input type="radio" id="option-two" name="selector" value="False">
+   <input type="radio" id="option-two" name="is_good" value="False">
    <label style="color:rgba(255,0,0,.5)"for="option-two">I want them all dead</label>
 
  </div>

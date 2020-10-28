@@ -6,7 +6,7 @@ font-size: 12px;
   background: rgba(0,0,0,.0);
   border-radius: none !important;
   box-shadow: none !important;
-  border-bottom: .5px solid red;
+  border-bottom: 2.5px solid red;
 }
 
 html {
@@ -183,10 +183,8 @@ color: red}
 
 .login-box #login_link {
 
-  color: green !important;
-  position: relative;
-  display: inline-block;
-  font-size: 14px;
+  color: red ;
+font-size: 12px;
   text-decoration: none;
   text-transform: uppercase;
   letter-spacing: 2px
@@ -194,7 +192,7 @@ color: red}
 
 .login-box #login_link:hover {
   background: rgba(0,0,0,.0);
-  font-size: 14.9px;
   border-radius: none !important;
   box-shadow: none !important;
+  border-bottom: 2.5px solid red;
 }
