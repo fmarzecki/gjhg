@@ -84,7 +84,7 @@ def login():
 
 
     return render_template('login.html')
-
+ 
 
 @app.route('/game', methods =["GET","POST"])
 @login_required
