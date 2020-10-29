@@ -13,7 +13,7 @@
   <h2>Register</h2>
   <form autocomplete="off" action="{{url_for('register_add')}}" method="POST">
     <div class="user-box">
-      <input type="text" name="username" id='username' required="">
+      <input autocomplete="off" type="text" name="username" id='username' required="">
       <label>Username </label>
     </div>
 
@@ -22,7 +22,7 @@
       <label>Email</label>
     </div>
       <div class="user-box">
-      <input type="password" name="password" id='password' required="True">
+      <input autocomplete="off" type="password" name="password" id='password' required="True">
       <label>Password</label>
     </div>
     <a class='hejka' href="/login" id="login_link"> I already have an account </a>

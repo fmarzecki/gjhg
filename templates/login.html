@@ -13,11 +13,11 @@
   <h2>Login</h2>
   <form autocomplete="off" action="{{url_for('login')}}" method="POST">
     <div class="user-box">
-      <input type="text" name="username_log" id='username_log' required="">
+      <input  autocomplete="off" type="text" name="username_log" id='username_log' required="">
       <label>Username </label>
     </div>
       <div class="user-box">
-      <input type="password" name="password_log" id='password_log' required="True">
+      <input autocomplete="off" type="password" name="password_log" id='password_log' required="True">
       <label>Password</label>
     </div>
     <a class='hejka' href="/register" id="login_reg"> New User? Click To Register </a>
