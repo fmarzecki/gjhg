@@ -20,6 +20,14 @@ body {
     url("pok.jpg");
 }
 
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active  {
+  transition: background-color 5000s;
+  -webkit-text-fill-color: #fff !important;
+}
+
 .login-box {
   position: absolute;
   top: 50%;
@@ -55,6 +63,7 @@ body {
   outline: none;
   background: transparent;
 }
+
 .login-box .user-box label {
   position: absolute;
   top:0;
