@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.exc import IntegrityError
 from datetime import datetime
@@ -19,6 +19,7 @@ login_manager.login_view = 'login'
 # initialize login_manager here:
 login_manager.init_app(app)
 
+#  MODELS *******************************
 
 class Users(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -26,7 +27,7 @@ class Users(UserMixin, db.Model):
     email = db.Column(db.String(100), index=True, unique=True)
     password = db.Column(db.String(100), index=True)
     joined_at_date = db.Column(db.DateTime(), index=True, default=datetime.utcnow)
-
+    trainers = db.relationship('Trainers', backref='users', lazy='dynamic')
     def check_password(self, password):
         return check_password_hash(self.password, password)
 
@@ -38,43 +39,39 @@ class Trainers(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     trainer_name = db.Column(db.String(100), index=True, unique=True)
     is_good = db.Column(db.String(5))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
-
+#  LOGIN_MANAGER *******************************
 @login_manager.user_loader
 def load_user(id):
     return Users.query.get(int(id))
 
 
-@app.route('/', methods=["GET", "POST"])
-def index():
-    return render_template('index.html')
+@login_manager.unauthorized_handler
+def unauthorized():
+    # do stuff
+    return "You are not logged in. Click here to get <a href=" + str("/") + ">back to Landing Page</a>"
 
 
-@app.route('/register', methods=["GET", "POST"])
-def register():
-    return render_template('register.html')
 
+#  LOGIN/REGISTER/TRAINER ADD *******************************
 
 @app.route('/game/add_trainer', methods=["GET", "POST"])
 def trainer_add():
     if request.method == "POST":
         trainer = Trainers(
             trainer_name=request.form.get('trainer_name'),
-            is_good=request.form.get('is_good')
+            is_good=request.form.get('is_good'),
+            user_id = current_user.id
         )
         db.session.add(trainer)
         try:
             db.session.commit()
         except IntegrityError:
             db.session.rollback()
-            return redirect(url_for('game_err'))
+            return redirect(url_for('game'))
 
     return redirect(url_for("game_app"))
-
-
-@app.route('/game/app', methods=["GET", "POST"])
-def game_app():
-    return render_template('game_app.html', current_user=user)
 
 
 @app.route('/register/add', methods=["GET", "POST"])
@@ -100,9 +97,13 @@ def login():
         user = Users.query.filter_by(username=request.form['username_log']).first()
         if user and user.check_password(request.form['password_log']):
             login_user(user)
+            flash('Logged in successfully.')
             return redirect(url_for('game'))
         return redirect(url_for('login_err'))
     return render_template('login.html')
+
+
+#  JUST TEMPLATES *******************************
 
 
 @app.route('/game', methods=["GET", "POST"])
@@ -110,18 +111,20 @@ def login():
 def game():
     return render_template('game.html')
 
-
-@login_manager.unauthorized_handler
-def unauthorized():
-    # do stuff
-    return "You are not logged in. Click here to get <a href=" + str("/") + ">back to Landing Page</a>"
-
-
-@app.route("/logout")
+@app.route('/game/app', methods=["GET", "POST"])
 @login_required
-def logout():
-    logout_user()
-    return redirect(url_for('index'))
+def game_app():
+
+    return render_template('game_app.html')
+
+@app.route('/', methods=["GET", "POST"])
+def index():
+    return render_template('index.html')
+
+@app.route('/register', methods=["GET", "POST"])
+def register():
+    return render_template('register.html')
+
 
 
 # ERRORS TEMPLATES
@@ -135,5 +138,12 @@ def login_err():
 def register_err():
     return render_template('integrityError.html')
 
+
+
+@app.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('index'))
 
 
