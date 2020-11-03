@@ -13,6 +13,9 @@
 
 <div class="container">
   <h1> No siem zaczynamy gre</h1>
+{% if current_user.is_authenticated %}
+  Hi {{ current_user.trainer_name }}!
+{% endif %}
 </div>
 
   <script src="static/script.js"></script>
